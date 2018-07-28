@@ -36,7 +36,7 @@ export default class Register extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { form, dispatch } = this.props;
-    const account = form.getFieldValue('mail');
+    const account = form.getFieldValue('username');
     if (nextProps.register.status === 'ok') {
       dispatch(
         routerRedux.push({
@@ -86,8 +86,7 @@ export default class Register extends Component {
         dispatch({
           type: 'register/submit',
           payload: {
-            ...values,
-            prefix,
+            ...values
           },
         });
       }
@@ -170,6 +169,17 @@ export default class Register extends Component {
         <h3>注册</h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
+            {getFieldDecorator('username', {
+              rules: [
+                {
+                  required: true,
+                  message: '用户名',
+                },
+
+              ],
+            })(<Input size="large" placeholder="用户名" />)}
+          </FormItem>
+         {/* <FormItem>
             {getFieldDecorator('mail', {
               rules: [
                 {
@@ -182,7 +192,7 @@ export default class Register extends Component {
                 },
               ],
             })(<Input size="large" placeholder="邮箱" />)}
-          </FormItem>
+          </FormItem>*/}
           <FormItem help={help}>
             <Popover
               content={
@@ -220,7 +230,7 @@ export default class Register extends Component {
               ],
             })(<Input size="large" type="password" placeholder="确认密码" />)}
           </FormItem>
-          <FormItem>
+         {/* <FormItem>
             <InputGroup compact>
               <Select
                 size="large"
@@ -268,7 +278,7 @@ export default class Register extends Component {
                 </Button>
               </Col>
             </Row>
-          </FormItem>
+          </FormItem>*/}
           <FormItem>
             <Button
               size="large"

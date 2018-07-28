@@ -24,13 +24,14 @@ export default class LoginPage extends Component {
 
   handleSubmit = (err, values) => {
     const { type } = this.state;
+    //console.log('type',type);
     const { dispatch } = this.props;
     if (!err) {
       dispatch({
         type: 'login/login',
         payload: {
           ...values,
-          type,
+          type:type
         },
       });
     }
@@ -49,17 +50,16 @@ export default class LoginPage extends Component {
   render() {
     const { login, submitting } = this.props;
     const { type, autoLogin } = this.state;
-    console.log('Login=>', Login['Text']);
     return (
       <div className={styles.main}>
         <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
-          <Tab key="account" tab="应用查看">
+          <Tab key="account" tab="用户登录">
             {login.status === 'error' &&
               login.type === 'account' &&
               !submitting &&
-              this.renderMessage('应用的key或者secret错误')}
-            <UserName name="app_key" placeholder="应用key" />
-            <AppSecret name="app_secret" placeholder="应用secret" />
+              this.renderMessage('用户名或密码错误')}
+            <UserName name="username" placeholder="用户名" />
+            <Password name="password" placeholder="密码" />
           </Tab>
           {/*  <Tab key="mobile" tab="手机号登录">
             {login.status === 'error' &&
@@ -77,16 +77,13 @@ export default class LoginPage extends Component {
               忘记密码
             </a>
           </div>*/}
-          <Submit loading={submitting}>查看</Submit>
-          {/* <div className={styles.other}>
-            其他登录方式
-            <Icon className={styles.icon} type="alipay-circle" />
-            <Icon className={styles.icon} type="taobao-circle" />
-            <Icon className={styles.icon} type="weibo-circle" />
+          <Submit loading={submitting}>登录</Submit>
+           <div className={styles.other}>
+
             <Link className={styles.register} to="/user/register">
               注册账户
             </Link>
-          </div>*/}
+          </div>
         </Login>
       </div>
     );

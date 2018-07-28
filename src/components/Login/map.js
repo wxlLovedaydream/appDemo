@@ -13,7 +13,7 @@ const map = {
     rules: [
       {
         required: true,
-        message: 'Please enter appKey!',
+        message: '请输入用户名',
       },
     ],
   },
@@ -42,7 +42,7 @@ const map = {
     rules: [
       {
         required: true,
-        message: 'Please enter password!',
+        message: '请输入密码!',
       },
     ],
   },

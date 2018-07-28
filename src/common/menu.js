@@ -1,6 +1,6 @@
 import { isUrl } from '../utils/utils';
 
-const menuData = [
+/*const menuData = [
   {
     name: 'dashboard',
     icon: 'dashboard',
@@ -154,8 +154,57 @@ const menuData = [
       },
     ],
   },
-];
-
+];*/
+const menuData = [
+  {
+    name: '应用',
+    icon: 'home',
+    path: 'home',
+    children: [
+      {
+        name: '应用列表',
+        path: 'appinfos',
+      }
+    ],
+  },
+  {
+    name: '列表页',
+    icon: 'table',
+    path: 'list',
+    children: [
+      {
+        name: '查询表格',
+        path: 'table-list',
+      },
+      {
+        name: '标准列表',
+        path: 'basic-list',
+      },
+      {
+        name: '卡片列表',
+        path: 'card-list',
+      },
+      {
+        name: '搜索列表',
+        path: 'search',
+        children: [
+          {
+            name: '搜索列表（文章）',
+            path: 'articles',
+          },
+          {
+            name: '搜索列表（项目）',
+            path: 'projects',
+          },
+          {
+            name: '搜索列表（应用）',
+            path: 'applications',
+          },
+        ],
+      },
+    ],
+  },
+]
 function formatter(data, parentPath = '/', parentAuthority) {
   return data.map(item => {
     let { path } = item;

@@ -10,7 +10,7 @@ const { ConnectedRouter } = routerRedux;
 const { AuthorizedRoute } = Authorized;
 
 function RouterConfig({ history, app }) {
-  const routerData = getRouterData(app);
+  const routerData = getRouterData(app);//获得路由数据
   const UserLayout = routerData['/user'].component;
   const BasicLayout = routerData['/'].component;
   return (

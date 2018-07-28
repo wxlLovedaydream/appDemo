@@ -131,6 +131,7 @@ class BasicLayout extends React.PureComponent {
     Object.keys(routerData).forEach(key => {
       if (pathToRegexp(key).test(pathname)) {
         currRouterData = routerData[key];
+
       }
     });
     if (currRouterData && currRouterData.name) {
@@ -275,15 +276,15 @@ class BasicLayout extends React.PureComponent {
                   blankTarget: true,
                 },
                 {
-                  key: 'Ant Design',
-                  title: 'Ant Design',
+                  key: '电信物联网',
+                  title: '电信物联网',
                   href: 'http://ant.design',
                   blankTarget: true,
                 },
               ]}
               copyright={
                 <Fragment>
-                  Copyright <Icon type="copyright" /> 2018 蚂蚁金服体验技术部出品
+                  Copyright <Icon type="copyright" /> 2018 中国电信物联网
                 </Fragment>
               }
             />

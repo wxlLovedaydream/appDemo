@@ -60,20 +60,21 @@ export async function queryFakeList(params) {
   return request(`/api/fake_list?${stringify(params)}`);
 }
 
-export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
+export async function AccountLogin(params) {
+  return request(`/UserLogin?${stringify(params)}`);
+}
+
+
+
+/*export async function Register(params) {
+  return request('/UserRegister', {
     method: 'POST',
     body: params,
   });
+}*/
+export async function Register(params) {
+  return request(`/UserRegister?${stringify(params)}`);
 }
-
-export async function fakeRegister(params) {
-  return request('/api/register', {
-    method: 'POST',
-    body: params,
-  });
-}
-
 export async function queryNotices() {
   return request('/api/notices');
 }
