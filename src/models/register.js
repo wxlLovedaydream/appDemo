@@ -23,8 +23,8 @@ export default {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
-        console.log('urlParams',urlParams);
-        console.log('params',params);
+        /*console.log('urlParams',urlParams);
+        console.log('params',params);*/
         let url = `${urlParams.origin}/#/user/login`;
        window.location.href = url;
       /*  if (redirect) {

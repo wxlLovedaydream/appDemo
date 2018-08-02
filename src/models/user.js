@@ -1,4 +1,5 @@
 import { query as queryUsers, queryCurrent } from '../services/user';
+import { getUserToken } from '../utils/authority';
 
 export default {
   namespace: 'user',
@@ -6,25 +7,25 @@ export default {
   state: {
     list: [],
     currentUser: {},
+    username: getUserToken('username'),
   },
 
   effects: {
     *fetch(_, { call, put }) {
-      const response = yield call(queryUsers);
+     const response = yield call(queryUsers);
       yield put({
-        type: 'save',
-        payload: response,
+        type: 'save'
       });
     },
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
+     // let username = getUserToken('username')
       yield put({
         type: 'saveCurrentUser',
         payload: response,
       });
     },
   },
-
   reducers: {
     save(state, action) {
       return {
@@ -35,7 +36,10 @@ export default {
     saveCurrentUser(state, action) {
       return {
         ...state,
+        username:getUserToken('username'),
         currentUser: action.payload || {},
+
+
       };
     },
     changeNotifyCount(state, action) {

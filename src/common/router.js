@@ -18,6 +18,7 @@ const dynamicWrapper = (app, models, component) => {
   models.forEach(model => {
     if (modelNotExisted(app, model)) {
       // eslint-disable-next-line
+      //console.log(model);
       app.model(require(`../models/${model}`).default);
     }
   });
@@ -74,9 +75,12 @@ export const getRouterData = app => {
     '/': {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
-    /*'/home/appinfos': {
-      component: dynamicWrapper(app, ['user', 'login'], () => import('../routes/Home/Appinfos')),
-    },*/
+    '/home/appinfos': {
+      component: dynamicWrapper(app, ['appinfoLists'], () => import('../routes/Home/Appinfos')),
+    },
+    '/device/devicelist':{
+      component:dynamicWrapper(app, ['devicelist'], () => import('../routes/Device/DeviceList')),
+    },
     '/dashboard/analysis': {
       component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),
     },

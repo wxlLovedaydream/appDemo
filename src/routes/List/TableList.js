@@ -1,24 +1,9 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Input,
-  Select,
-  Icon,
-  Button,
-  Dropdown,
-  Menu,
-  InputNumber,
-  DatePicker,
-  Modal,
-  message,
-  Badge,
-  Divider,
-} from 'antd';
+import {  Row, Col,  Card, Form, Input, Select,
+  Icon,  Button, Dropdown, Menu, InputNumber, DatePicker,
+  Modal, message, Badge, Divider,} from 'antd';
 import StandardTable from 'components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
@@ -192,7 +177,6 @@ export default class TableList extends PureComponent {
         description: fields.desc,
       },
     });
-
     message.success('添加成功');
     this.setState({
       modalVisible: false,
@@ -200,7 +184,7 @@ export default class TableList extends PureComponent {
   };
 
   renderSimpleForm() {
-    const { form } = this.props;
+    const { form,list } = this.props;
     const { getFieldDecorator } = form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
@@ -214,9 +198,10 @@ export default class TableList extends PureComponent {
             <FormItem label="使用状态">
               {getFieldDecorator('status')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
-                </Select>
+
+                    <Option value="on">ON </Option>
+
+                 </Select>
               )}
             </FormItem>
           </Col>

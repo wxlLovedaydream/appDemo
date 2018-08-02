@@ -168,6 +168,17 @@ const menuData = [
     ],
   },
   {
+    name:'设备',
+    icon:'appstore-o',
+    path:'device',
+    children:[
+      {
+        name:'设备列表',
+        path:'devicelist',
+      }
+    ]
+  },
+  {
     name: '列表页',
     icon: 'table',
     path: 'list',

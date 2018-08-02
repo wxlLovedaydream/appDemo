@@ -1,6 +1,6 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
-
+import {getUserToken} from '../utils/authority.js';
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }
@@ -59,12 +59,9 @@ export async function queryAdvancedProfile() {
 export async function queryFakeList(params) {
   return request(`/api/fake_list?${stringify(params)}`);
 }
-
-export async function AccountLogin(params) {
-  return request(`/UserLogin?${stringify(params)}`);
+export async function queryNotices() {
+  return request('/api/notices');
 }
-
-
 
 /*export async function Register(params) {
   return request('/UserRegister', {
@@ -72,9 +69,23 @@ export async function AccountLogin(params) {
     body: params,
   });
 }*/
-export async function Register(params) {
-  return request(`/UserRegister?${stringify(params)}`);
+export async function AccountLogin(params) {
+  return request(`/UserLogin?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
 }
-export async function queryNotices() {
-  return request('/api/notices');
+
+export async function Register(params) {
+  return request(`/UserRegister?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
+}
+export async function queryAppinfos(params){
+  return request(`/GetAppinfos?username=${getUserToken('username')}&timestamp=${Date.parse(new Date())}`);
+}
+export async function addApp(params){
+  return request(`/AddAppinfo?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
+}
+
+export async function queryAppDetail(params){
+  return request(`/getAppDetail?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
+}
+export async function queryDeviceList(params){
+  return request(`/QueryDeviceList?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
 }

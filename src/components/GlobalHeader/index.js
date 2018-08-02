@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import { Menu, Icon, Spin, Tag, Dropdown, Avatar, Divider, Tooltip } from 'antd';
+import React, { Component } from 'react';
+import { Menu, Icon, Spin, Tag, Dropdown, Avatar, Divider, Tooltip,Form,Select,Input,Button } from 'antd';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
 import Debounce from 'lodash-decorators/debounce';
@@ -7,8 +7,39 @@ import { Link } from 'dva/router';
 import NoticeIcon from '../NoticeIcon';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
+const { Option } = Select;
+const FormItem = Form.Item;
+/*const AppForm = Form.create()(props =>{
+  const {form,list,selectVisible,selectApp,handleSelectApp,handleSelectVisible} = props;
+  console.log('selectVisible',selectVisible);
+ const handleselectApp=list=>{
+    console.log(list);
+  }
+  const handleselectVisible=e=>{
+   //console.log(e);
+  }
+  return(
+    <div>当前应用：
+      <span >
+        <Button onClick={handleselectVisible}>
+          {(selectApp.appKey||list.length)? (selectApp.appKey||list[0].appKey):''}
+        </Button>
+        <Select style={{width:'100%'}}
+                ref='myselect'
+                defaultActiveFirstOption={true}>
+            { list.map((value, index, array)=>{
+              return (<Option value={value.appKey} key={value.appKey}>{value.appKey} </Option>)
+            })}</Select>
+       </span>
+    </div>
 
-export default class GlobalHeader extends PureComponent {
+);
+});*/
+export default class GlobalHeader extends Component {
+  state={
+    selectVisible:false,
+    selectApp:{},
+  }
   componentWillUnmount() {
     this.triggerResizeEvent.cancel();
   }
@@ -57,20 +88,21 @@ export default class GlobalHeader extends PureComponent {
     event.initEvent('resize', true, false);
     window.dispatchEvent(event);
   }
-  render() {
-    const {
-      currentUser = {},
-      collapsed,
-      fetchingNotices,
-      isMobile,
-      logo,
-      onNoticeVisibleChange,
-      onMenuClick,
-      onNoticeClear,
-    } = this.props;
+  handleSelectApp = appKey =>{
+   let {list,selectApp} = this.props;
+   /*console.log(list);
+   console.log(appKey);*/
+  const app= list.filter((currentValue,index,arr)=>{
+     return currentValue.appKey==appKey&&currentValue;
+    })
+    selectApp(app[0]);
+  };
+  render(){
+      const { currentUser = {},collapsed,fetchingNotices,isMobile, logo,
+      onNoticeVisibleChange,onMenuClick,onNoticeClear,list=[],} = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-        <Menu.Item disabled>
+       {/* <Menu.Item disabled>
           <Icon type="user" />个人中心
         </Menu.Item>
         <Menu.Item disabled>
@@ -78,7 +110,7 @@ export default class GlobalHeader extends PureComponent {
         </Menu.Item>
         <Menu.Item key="triggerError" disabled>
           <Icon type="close-circle" />触发报错
-        </Menu.Item>
+        </Menu.Item>*/}
         <Menu.Divider />
         <Menu.Item key="logout">
           <Icon type="logout" />退出登录
@@ -86,7 +118,8 @@ export default class GlobalHeader extends PureComponent {
       </Menu>
     );
     const noticeData = this.getNoticeData();
-    return (
+     let selectApp =this.state.selectApp;
+      return (
       <div className={styles.header}>
         {isMobile && [
           <Link to="/" className={styles.logo} key="logo">
@@ -151,10 +184,17 @@ export default class GlobalHeader extends PureComponent {
               emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
             />
           </NoticeIcon>*/}
+          {list.length&& <Select style={{width:'300px'}}
+                     defaultValue={list[0].appKey} ref='myselect'
+                    onChange={this.handleSelectApp}>
+            { list.map((value, index, array)=>{
+              return (<Option value={value.appKey} key={value.appKey}>{value.appKey} </Option>)
+            })}</Select>}
           {currentUser.name ? (
             <Dropdown overlay={menu}>
               <span className={`${styles.action} ${styles.account}`}>
-                <Avatar size="small" className={styles.avatar} src={currentUser.avatar} />
+               {/* <Avatar size="small" className={styles.avatar} src={currentUser.avatar} />*/}
+                <Icon size="small" className={styles.avatar} type="user" />
                 <span className={styles.name}>{currentUser.name}</span>
               </span>
             </Dropdown>

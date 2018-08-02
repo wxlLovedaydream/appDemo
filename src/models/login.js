@@ -1,7 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
 import { AccountLogin } from '../services/api';
-import { setAuthority } from '../utils/authority';
+import { setAuthority,setUserToken } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 import { getPageQuery } from '../utils/utils';
 
@@ -10,22 +10,24 @@ export default {
 
   state: {
     status: undefined,
+    username:undefined
   },
 
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(AccountLogin, payload);
-     // console.log(response);
+     console.log('AccountLogin',response);
       let res ={...response} ;
       if(response.statuscode=='0'){
         //成功
         res.currentAuthor='user';
         res.type= 'account';
+        res.username =payload.username;
       }else{
         res.currentAuthor='guest';
         res.type= 'account';
       }
-      //console.log(res);
+      console.log('AccountLogin',res);
       yield put({
         type: 'changeLoginStatus',
         payload: res,
@@ -36,25 +38,19 @@ export default {
         reloadAuthorized();
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
-
         let { redirect } = params;
         if (redirect) {
-          //console.log('redirect',redirect);
           const redirectUrlParams = new URL(redirect);
-          //console.log('redirectUrlParams',redirectUrlParams);
           if (redirectUrlParams.origin === urlParams.origin) {
             redirect = redirect.substr(urlParams.origin.length);
-           // console.log(redirect);
             if (redirect.startsWith('/#')) {
               redirect = redirect.substr(2);
             }
-           // window.location.href = urlParams.origin;
           } else {
             window.location.href = redirect;
             return;
           }
         }
-        console.log(redirect);
         yield put(routerRedux.replace(redirect || '/'));
       }
     },
@@ -67,6 +63,7 @@ export default {
         },
       });
       reloadAuthorized();
+      setUserToken('');
       yield put(
         routerRedux.push({
           pathname: '/user/login',
@@ -80,12 +77,14 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      console.log("changeLoginStatus",payload);
+     // console.log("changeLoginStatus",payload);
       setAuthority(payload.currentAuthor);
-      console.log("setAuthority",payload);
+      setUserToken(payload.username);
+      //console.log("setAuthority",payload);
       return {
         ...state,
         status: payload.status,
+        username:payload.username,
         type: payload.type,
       };
     },

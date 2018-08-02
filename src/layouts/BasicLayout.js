@@ -16,6 +16,7 @@ import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.svg';
+import { getUserToken } from '../utils/authority';
 
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -112,10 +113,13 @@ class BasicLayout extends React.PureComponent {
         isMobile: mobile,
       });
     });
-    const { dispatch } = this.props;
+    const { dispatch,username } = this.props;
+    //console.log(dispatch)
     dispatch({
       type: 'user/fetchCurrent',
+     /* payload: {username},*/
     });
+    //console.log(dispatch)
   }
 
   componentWillUnmount() {
@@ -199,6 +203,17 @@ class BasicLayout extends React.PureComponent {
       });
     }
   };
+  callback = ()=>{
+
+  }
+  selectApp = (appInfo)=>{
+    console.log('handleSelectApp',appInfo)
+    const {dispatch} = this.props;
+    dispatch({
+      type:'devicelist/selectCurrentApp',
+      payload:appInfo,
+    });
+  }
 
   render() {
     const {
@@ -209,7 +224,10 @@ class BasicLayout extends React.PureComponent {
       routerData,
       match,
       location,
+      list,
+      devicelist,
     } = this.props;
+   // console.log('currentUser',currentUser);
     const { isMobile: mb } = this.state;
     const bashRedirect = this.getBaseRedirect();
     const layout = (
@@ -239,6 +257,8 @@ class BasicLayout extends React.PureComponent {
               onCollapse={this.handleMenuCollapse}
               onMenuClick={this.handleMenuClick}
               onNoticeVisibleChange={this.handleNoticeVisibleChange}
+              list ={list}
+              selectApp={this.selectApp}
             />
           </Header>
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>
@@ -260,7 +280,7 @@ class BasicLayout extends React.PureComponent {
               <Route render={NotFound} />
             </Switch>
           </Content>
-          <Footer style={{ padding: 0 }}>
+         {/* <Footer style={{ padding: 0 }}>
             <GlobalFooter
               links={[
                 {
@@ -288,7 +308,7 @@ class BasicLayout extends React.PureComponent {
                 </Fragment>
               }
             />
-          </Footer>
+          </Footer>*/}
         </Layout>
       </Layout>
     );
@@ -303,9 +323,12 @@ class BasicLayout extends React.PureComponent {
   }
 }
 
-export default connect(({ user, global = {}, loading }) => ({
+export default connect(({ user, global = {}, loading,appinfoLists,devicelist }) => ({
   currentUser: user.currentUser,
+  username:user.username,
+  list:appinfoLists.list,
   collapsed: global.collapsed,
   fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,
+  devicelist:devicelist,
 }))(BasicLayout);
