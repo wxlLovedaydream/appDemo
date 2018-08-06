@@ -113,19 +113,28 @@ class BasicLayout extends React.PureComponent {
         isMobile: mobile,
       });
     });
-    const { dispatch,username } = this.props;
-    //console.log(dispatch)
+    const { dispatch,username,list } = this.props;
+    console.log(list)
     dispatch({
       type: 'user/fetchCurrent',
      /* payload: {username},*/
     });
+
     //console.log(dispatch)
   }
 
   componentWillUnmount() {
     unenquireScreen(this.enquireHandler);
   }
-
+  initalApp = list =>{
+    const { dispatch} = this.props;
+    if(list.length>0){
+      dispatch({
+        type: 'devicelist/setCurrentApp',
+        payload: list[0],
+      });
+    }
+  }
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
@@ -203,17 +212,21 @@ class BasicLayout extends React.PureComponent {
       });
     }
   };
-  callback = ()=>{
-
-  }
-  selectApp = (appInfo)=>{
-    console.log('handleSelectApp',appInfo)
+  selectApp = appInfo =>{
     const {dispatch} = this.props;
     dispatch({
       type:'devicelist/selectCurrentApp',
       payload:appInfo,
-    });
+    })
   }
+
+/*   selectApp = appInfo =>{
+     const {dispatch} = this.props;
+    dispatch({
+      type:'devicelist/selectCurrentApp',
+      payload:appInfo,
+    });
+  };*/
 
   render() {
     const {
@@ -225,8 +238,9 @@ class BasicLayout extends React.PureComponent {
       match,
       location,
       list,
-      devicelist,
+
     } = this.props;
+    this.initalApp(list);
    // console.log('currentUser',currentUser);
     const { isMobile: mb } = this.state;
     const bashRedirect = this.getBaseRedirect();
@@ -330,5 +344,5 @@ export default connect(({ user, global = {}, loading,appinfoLists,devicelist }) 
   collapsed: global.collapsed,
   fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,
-  devicelist:devicelist,
+
 }))(BasicLayout);

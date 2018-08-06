@@ -1,59 +1,126 @@
-import { queryDeviceList } from '../services/api';
+import { queryDeviceList,queryDeviceDetail ,queryDeviceCommand,queryDeviceCapabilities,
+  sendCommands,queryDeviceHistoryData} from '../services/api';
 import {getUserToken } from '../utils/authority';
 import {message} from 'antd';
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
 export default {
   namespace: 'devicelist',
+
   state: {
     appInfo: {},
     username: getUserToken('username'),
-    deviceList:[],
+    deviceList:{},
+    deviceDetail:{},
+    deviceCMD:{},
+    serviceCapabilities:{},
+    deviceCMDResponse:{},
+    deviceHistoryData:{},
   },
-          /*appId: GpBmw73RIV7pTQK8FG4rbWcX4YEa
-            pageno: 0
-            pagesize: 10
-            version: v1
-            version_new: v1.1.0
-            */
-  effects:{
-    *fetch({ payload,cb }, { call, put }){
-      const response = yield call(queryDeviceList,payload);
+
+  effects: {
+    *fetch({ payload }, { call, put }) {
+      const response = yield call(queryDeviceList, payload);
+      // console.log('GetAppinfos',payload);
       yield put({
-        type:'appDeviceList',
+        type: 'appDeviceList',
         payload:response,
       });
-      if(cb)cb();
     },
-    *selectCurrentApp({payload},{put}){
-      //console.log('selectCurrentApp',payload)
+    *selectCurrentApp({payload},{call,put}){
       yield put({
-        type:'setCurrentApp',
-        payload:payload,
+        type: 'setCurrentApp',
+        payload: payload,
       });
-         yield put(
-           routerRedux.push({
+      yield put(
+        routerRedux.push({
           pathname: '/device/devicelist',
-          search: stringify({
-            redirect: window.location.href,
-          }),
         })
       );
-    }
+    },
+    *queryDeviceDetail({payload},{call,put}){
+      const response = yield call(queryDeviceDetail,payload);
+     // console.log('queryDeviceDetail response',response);
+      yield put({
+        type: 'setDeviceDetail',
+        payload: response,
+      });
+    },
+    *queryDeviceCMD({payload},{call,put}){
+      const response = yield call(queryDeviceCommand,payload);
+      yield put({
+        type:'setDeviceCMD',
+        payload:response,
+      })
+    },
+    *queryDeviceCapabilities({payload},{call,put}){
+      const response = yield call(queryDeviceCapabilities,payload);
+      yield put({
+        type:'setDeviceCapabilities',
+        payload:response,
+      });
+    },
+    *sendDeviceCMD({payload},{call,put}){
+      const response = yield call(sendCommands,payload);
+      yield put({
+        type:'setDeviceCMDResponse',
+        payload:response,
+      });
+    },
+    *fetchDeviceHistoryData({payload},{call,put}){
+      const response = yield call(queryDeviceHistoryData,payload);
+      yield put({
+        type:'setDeviceHistoryData',
+        payload:response,
+      });
+    },
   },
-  reducer:{
-    appDeviceList(state,action){
+
+  reducers: {
+    appDeviceList(state, action) {
+      //console.log('appDeviceList',action);
       return {
         ...state,
-        deviceList:action.payload,
-
+        deviceList: action.payload,
       };
     },
-    setCurrentApp(state,action){
+    setCurrentApp(state, action) {
+     // console.log('action.payload',action);
       return {
         ...state,
         appInfo:action.payload,
+      };
+    },
+    setDeviceDetail(state, action){
+      return {
+        ...state,
+        deviceDetail:action.payload,
+      }
+    },
+    setDeviceCMD(state,action){
+      return{
+        ...state,
+        deviceCMD:action.payload,
+      }
+    },
+    setDeviceCapabilities(state,action){
+      return{
+        ...state,
+        serviceCapabilities:action.payload,
+      }
+    },
+    setDeviceCMDResponse(state,action){
+      return{
+        ...state,
+        deviceCMDResponse:action.payload,
+      }
+    },
+    setDeviceHistoryData(state,action){
+      return{
+        ...state,
+        deviceHistoryData:action.payload,
       }
     }
-  }
-}
+
+  },
+};

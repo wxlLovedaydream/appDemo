@@ -45,6 +45,7 @@ export default {
 
   reducers: {
     appList(state, action) {
+      //console.log('appList',action.payload);
       return {
         ...state,
         list: action.payload,
@@ -53,7 +54,6 @@ export default {
     },
     append(state, action) {
      // console.log('action.payload',action);
-
       return {
         ...state,
         list: action.payload?state.list.concat(action.payload):state.list,

@@ -89,3 +89,21 @@ export async function queryAppDetail(params){
 export async function queryDeviceList(params){
   return request(`/QueryDeviceList?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
 }
+export async function queryDeviceDetail(params){
+  return request(`/QueryDeviceDetail?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+export async function queryDeviceCommand(params){
+  return request(`/QueryDeviceCommand?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+export async function queryDeviceCapabilities(params){
+  return request(`/QueryDeviceCapabilities?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+export async function sendCommands(params){
+  return request(`/SendCommands?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+export async function queryDeviceHistoryData(params){
+  return request(`/QueryDeviceHistoryData?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+
+
+

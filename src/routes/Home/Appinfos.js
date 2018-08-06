@@ -62,8 +62,6 @@ export default class Appinfos extends Component{
         type: 'appinfoLists/fetch',
         payload: {username},
       });
-
-
   }
 
 

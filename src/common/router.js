@@ -81,6 +81,11 @@ export const getRouterData = app => {
     '/device/devicelist':{
       component:dynamicWrapper(app, ['devicelist'], () => import('../routes/Device/DeviceList')),
     },
+    '/device/devicedetail/:index':{
+      name:'设备详情',
+      component:dynamicWrapper(app, ['devicelist'], () => import('../routes/Device/DeviceDetail')),
+    },
+
     '/dashboard/analysis': {
       component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),
     },
