@@ -157,7 +157,7 @@ import { isUrl } from '../utils/utils';
 ];*/
 const menuData = [
   {
-    name: '应用',
+    name: '应用管理',
     icon: 'home',
     path: 'home',
     children: [
@@ -168,7 +168,7 @@ const menuData = [
     ],
   },
   {
-    name:'设备',
+    name:'设备管理',
     icon:'appstore-o',
     path:'device',
     children:[
@@ -176,6 +176,19 @@ const menuData = [
         name:'设备列表',
         path:'devicelist',
       }
+    ]
+  },{
+    name:'数据订阅',
+    icon:'pushpin-o',
+    path:'subscribe',
+    children:[
+      {
+        name:'数据订阅',
+        path:'subscribe',
+      },{
+        name:'数据推送',
+        path:'pushMessage',
+      },
     ]
   },
   {

@@ -119,7 +119,7 @@ export default class Appinfos extends Component{
                       <Card.Meta
                         title={<a href="#">应用信息</a>}
                         description={
-                          <Ellipsis className={styles.item} lines={6}>
+                          <Ellipsis className={styles.item} lines={5}>
                             <span> key</span>: {item.appKey}<br/>
                              <span>secret</span>: {item.appSecret}<br/>
                             <span>token</span>:{item.accessToken}<br/>

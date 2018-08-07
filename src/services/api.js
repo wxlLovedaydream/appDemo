@@ -104,6 +104,13 @@ export async function sendCommands(params){
 export async function queryDeviceHistoryData(params){
   return request(`/QueryDeviceHistoryData?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
 }
+export async function subscribeInterface(params){
+  return request(`/SubscribeInterface?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+export async function getSubscribeInterface(params){
+  return request(`/GetSubscribeInterface?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+
 
 
 
