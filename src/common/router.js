@@ -85,6 +85,10 @@ export const getRouterData = app => {
       name:'设备详情',
       component:dynamicWrapper(app, ['devicelist'], () => import('../routes/Device/DeviceDetail')),
     },
+    '/subscribe/subscribeurl':{
+      name:'订阅列表',
+      component:dynamicWrapper(app, ['subscribelist'], () => import('../routes/Subscribe/SubscribeCallbackUrl')),
+    },
     '/subscribe/subscribe':{
       name:'数据订阅',
       component:dynamicWrapper(app, ['subscribelist'], () => import('../routes/Subscribe/SubscribeListInterface')),

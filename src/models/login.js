@@ -1,10 +1,10 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
 import { AccountLogin } from '../services/api';
-import { setAuthority,setUserToken } from '../utils/authority';
+import { setAuthority,setUserToken,removeUserToken } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 import { getPageQuery } from '../utils/utils';
-
+import {message} from 'antd';
 export default {
   namespace: 'login',
 
@@ -24,6 +24,12 @@ export default {
         res.type= 'account';
         res.username =payload.username;
       }else{
+        if(response.statuscode=='1'){
+          message.error("用户名或密码错误",1);
+        }else if(response.statuscode=='2'){
+          message.error("用户不存在",1);
+        }
+
         res.currentAuthor='guest';
         res.type= 'account';
       }
@@ -63,7 +69,7 @@ export default {
         },
       });
       reloadAuthorized();
-      setUserToken('');
+      removeUserToken();
       yield put(
         routerRedux.push({
           pathname: '/user/login',

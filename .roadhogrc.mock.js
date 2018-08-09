@@ -142,4 +142,4 @@ const proxy = {
 };
 
 //export default (noProxy ? {} : delay(proxy, 1000));
-export default {  'GET /(.*)': 'http://localhost:8080/PlatformAPP/',};
+export default {  'GET /(.*)': 'http://localhost:8080/',};

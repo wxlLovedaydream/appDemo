@@ -23,10 +23,9 @@ export default class DeviceList extends Component{
     //console.log(e);
   }
   render(){
-    const {
-      deviceList,appInfo,
-    } = this.props;
-    console.log(appInfo);
+    const {  deviceList,appInfo, } = this.props;
+    const datas = {data:deviceList.devices, pagination:deviceList.pagination}
+    //console.log(appInfo);
     const columns = [
       {
         title: '状态',
@@ -67,7 +66,7 @@ export default class DeviceList extends Component{
       <PageHeaderLayout title="设备列表">
         <StandardTable
           columns={columns}
-          data={deviceList}
+          data={datas}
         />
       </PageHeaderLayout>
     );

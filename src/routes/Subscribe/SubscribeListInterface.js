@@ -65,7 +65,7 @@ if(notifyType){this.setNotifyType(notifyType);}
       modalVisible:false,
     })
     const param = {
-      callbackurl:`http://${fields.callbackurl}/callbackurltest`,
+      callbackurl:`http://${fields.callbackurl}/PushDeviceDataChanged`,
       appId:appInfo.appKey,
       accessToken:appInfo.accessToken,
       notifyType:notifyType,

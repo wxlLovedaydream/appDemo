@@ -15,6 +15,10 @@ export function setUserToken(username){
   console.log('setUserToken',username);
   return localStorage.setItem('username', username);
 }
+export function removeUserToken(){
+  //console.log('setUserToken',username);
+  return localStorage.removeItem('username');
+}
 export function getToken(){
   return localStorage.getItem('token');
 }

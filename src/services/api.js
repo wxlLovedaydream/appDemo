@@ -70,46 +70,56 @@ export async function queryNotices() {
   });
 }*/
 export async function AccountLogin(params) {
-  return request(`/UserLogin?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
+  return request(`/PlatformAPP/UserLogin?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
 }
 
 export async function Register(params) {
-  return request(`/UserRegister?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
+  return request(`/PlatformAPP/UserRegister?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
 }
 export async function queryAppinfos(params){
-  return request(`/GetAppinfos?username=${getUserToken('username')}&timestamp=${Date.parse(new Date())}`);
+  return request(`/PlatformAPP/GetAppinfos?username=${getUserToken('username')}&timestamp=${Date.parse(new Date())}`);
 }
 export async function addApp(params){
-  return request(`/AddAppinfo?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
+  return request(`/PlatformAPP/AddAppinfo?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
 }
 
 export async function queryAppDetail(params){
-  return request(`/getAppDetail?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
+  return request(`/PlatformAPP/getAppDetail?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
 }
 export async function queryDeviceList(params){
-  return request(`/QueryDeviceList?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
+  return request(`/PlatformAPP/QueryDeviceList?${stringify(params)}&timestamp=${Date.parse(new Date())}`);
 }
 export async function queryDeviceDetail(params){
-  return request(`/QueryDeviceDetail?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+  return request(`/PlatformAPP/QueryDeviceDetail?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
 }
 export async function queryDeviceCommand(params){
-  return request(`/QueryDeviceCommand?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+  return request(`/PlatformAPP/QueryDeviceCommand?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
 }
 export async function queryDeviceCapabilities(params){
-  return request(`/QueryDeviceCapabilities?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+  return request(`/PlatformAPP/QueryDeviceCapabilities?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
 }
 export async function sendCommands(params){
-  return request(`/SendCommands?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+  return request(`/PlatformAPP/SendCommands?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
 }
 export async function queryDeviceHistoryData(params){
-  return request(`/QueryDeviceHistoryData?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+  return request(`/PlatformAPP/QueryDeviceHistoryData?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
 }
 export async function subscribeInterface(params){
-  return request(`/SubscribeInterface?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+  return request(`/PlatformAPP/SubscribeInterface?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
 }
-export async function getSubscribeInterface(params){
-  return request(`/GetSubscribeInterface?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+export async function getSubscribeUrl(params){
+  return request(`/PlatformAPP/GetSubscribeInterface?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
 }
+export async function deleteSubscribe(params){
+  return request(`/PlatformAPP/DeleteSubscribe?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+export async function deleteBatchSubscribe(params){
+  return request(`/PlatformAPP/DeleteSubscribe?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+export async function queryDeviceDataChanged(params){
+  return request(`/PlatformAPP/QueryDeviceDataChanged?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+
 
 
 
