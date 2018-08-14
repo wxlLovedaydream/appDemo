@@ -8,13 +8,14 @@ const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const form = Form.form;
 const CreateForm = Form.create()(props => {
-
   const { modalVisible,form,handleCreateCMD,handleModalVisible,serviceCapabilities,methods,method,
     handleServiceChange,onMethodChange,handleCMDType,} = props;
+
   //console.log('serviceCapabilities',serviceCapabilities);
   const deviceCapabilities = serviceCapabilities.deviceCapabilities;
   const serviceOptions = deviceCapabilities&&deviceCapabilities[0].serviceCapabilities
       .map((cur,index) => <Option key={index} value={index}>{cur.serviceType}</Option>);
+
   const cmdOptions =  deviceCapabilities&&deviceCapabilities[0]
     .serviceCapabilities[methods].commands.map((val,index) =>
     <Option key={val.commandName} value={index}>{val.commandName}</Option>);
@@ -25,6 +26,23 @@ const CreateForm = Form.create()(props => {
       handleCreateCMD(fieldsValue);
     });
   };
+  //let tip = serviceCapabilities.deviceCapabilities&&JSON.stringify(deviceCapabilities[0].serviceCapabilities[0].commands[0].paras);
+/*  onHandleServiceChange = (value) =>{
+   // tip=JSON.stringify(deviceCapabilities[0].serviceCapabilities[value].commands[0].paras)
+    handleServiceChange(value);
+  }
+  onHandleMethodChange = (value) =>{
+    onMethodChange(value);
+
+  }*/
+  let tip ='';
+  if(serviceCapabilities.deviceCapabilities){
+    const {paraName,dataType,min,max} = deviceCapabilities[0].serviceCapabilities[methods].commands[method].paras[0];
+
+    let res = dataType=='int'?`取值区间:[${min}-${min}]`:'';
+    tip = `命令名称：${paraName}，数据类型：${dataType}，${res}`;
+  }
+
   return (
     <Modal
       title="创建命令"
@@ -55,6 +73,12 @@ const CreateForm = Form.create()(props => {
         {form.getFieldDecorator('paras', {
           rules: [{ required: true, message: '请输入命令' }],
         })(<Input placeholder="请输入命令"/>)}
+
+      </FormItem>
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="提示">
+
+        {tip}
+
       </FormItem>
     </Modal>
   );
@@ -114,19 +138,32 @@ export default class DeviceCommand extends Component{
     //param.command = command;
     deviceCMDSend(command);
     this.handleModalVisible(false);
-    console.log('handleCreateCMD',command);
+    //console.log('handleCreateCMD',command);
+  };
+
+  onPageChange = (page, pageSize) =>{
+    console.log(page);
+    console.log(pageSize);
   }
+/*  const pagination = {
+
+    current:deviceHistoryData.pageNo+1,
+    pageSize:10,
+
+  };*/
   render(){
     const {tableMenu,deviceCMD,serviceCapabilities } = this.props;
     const {modalVisible,methods,method} = this.state;
    const {pagination} =deviceCMD;
   // console.log('serviceCapabilities',serviceCapabilities);
    const page = pagination&&
-     {current:pagination.pageNo,
+     {current:pagination.pageNo+1,
       total:pagination.totalSize,
-       pageSize:pagination.pageSize,
-       showSizeChanger: true,
-       showQuickJumper: true,};
+       pageSize:10,
+       showSizeChanger: false,
+       showQuickJumper: false,
+       onChange:this.onPageChange,
+     };
 
     const parentMethods = {
       handleCreateCMD: this.handleCreateCMD,
@@ -135,8 +172,8 @@ export default class DeviceCommand extends Component{
       onMethodChange:this.onMethodChange,
       handleCMDType:this.handleCMDType,
     };
-    console.log('deviceCMD',deviceCMD);
-    console.log('tableMenu',tableMenu);
+   // console.log('deviceCMD',deviceCMD);
+    //console.log('tableMenu',tableMenu);
     return (<div>
       <div style={{margin:'0px 0px 15px 0px'}}>
         <Button onClick={() => this.handleModalVisible(true)} type="primary">

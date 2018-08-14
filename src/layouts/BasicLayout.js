@@ -127,8 +127,11 @@ class BasicLayout extends React.PureComponent {
     unenquireScreen(this.enquireHandler);
   }
   initalApp = list =>{
-    const { dispatch} = this.props;
-    if(list.length>0){
+
+    const { dispatch,appInfo} = this.props;
+    console.log('initalApp',);
+    if(list.length>0&&!appInfo.appKey){
+
       dispatch({
         type: 'devicelist/setCurrentApp',
         payload: list[0],
@@ -212,11 +215,12 @@ class BasicLayout extends React.PureComponent {
       });
     }
   };
-  selectApp = appInfo =>{
+  selectApp = app =>{
     const {dispatch} = this.props;
+    console.log('devicelist/selectCurrentApp',app);
     dispatch({
       type:'devicelist/selectCurrentApp',
-      payload:appInfo,
+      payload:app,
     })
   }
 
@@ -344,5 +348,6 @@ export default connect(({ user, global = {}, loading,appinfoLists,devicelist }) 
   collapsed: global.collapsed,
   fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,
+  appInfo:devicelist.appInfo
 
 }))(BasicLayout);

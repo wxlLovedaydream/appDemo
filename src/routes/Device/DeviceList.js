@@ -13,7 +13,7 @@ export default class DeviceList extends Component{
   componentDidMount(){
     const {dispatch,appInfo,deviceList} = this.props;
     //const {appInfo} = devicelist;
-    //console.log('appInfo',appInfo);
+    console.log('appInfo',appInfo);
     dispatch({
       type:'devicelist/fetch',
       payload:appInfo,
@@ -21,10 +21,18 @@ export default class DeviceList extends Component{
 }
   handleStandardTableChange=(pagination, filtersArg, sorter)=>{
     //console.log(e);
+  };
+  onPageChange = (page, pageSize) =>{
+    console.log(page);
+    console.log(pageSize);
   }
   render(){
-    const {  deviceList,appInfo, } = this.props;
-    const datas = {data:deviceList.devices, pagination:deviceList.pagination}
+    const {  deviceList, } = this.props;
+    const datas = {
+      data:deviceList.devices,
+      pagination:deviceList.pagination,
+      onChange :this.onPageChange
+    };
     //console.log(appInfo);
     const columns = [
       {
@@ -61,7 +69,7 @@ export default class DeviceList extends Component{
 
       },
 
-    ]
+    ];
     return (
       <PageHeaderLayout title="设备列表">
         <StandardTable

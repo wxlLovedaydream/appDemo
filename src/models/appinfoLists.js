@@ -3,7 +3,6 @@ import {getUserToken } from '../utils/authority';
 import {message} from 'antd';
 export default {
   namespace: 'appinfoLists',
-
   state: {
     list: [],
     username:getUserToken('username'),
@@ -19,7 +18,6 @@ export default {
       });
     },
     *add({payload},{call,put}){
-     // console.log('payload',payload);
       const response = yield call(addApp, payload);
       const {res,appKey,appSecret}= response;
       const appinfo= [{...response},];

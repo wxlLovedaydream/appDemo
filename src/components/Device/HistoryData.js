@@ -6,9 +6,20 @@ export default class HistoryData extends Component{
     /*const fetchHistoryData = this.props;
     fetchHistoryData();*/
   }
+  onPageChange = (page, pageSize) =>{
+    console.log(page);
+    console.log(pageSize);
+  }
   render(){
     const {deviceHistoryData} = this.props;
     console.log(deviceHistoryData);
+    const pagination = {
+
+        current:deviceHistoryData.pageNo+1,
+        pageSize:10,
+      //deviceHistoryData.pageSize,
+    }
+    //{"pageNo":0,"pageSize":4
   // const {deviceDataHistoryDTOs} = deviceHistoryData;
     const tableMenu =[
       {

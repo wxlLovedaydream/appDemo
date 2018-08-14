@@ -22,19 +22,23 @@ export default {
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryDeviceList, payload);
       // console.log('GetAppinfos',payload);
+      if(response.error_code==''){
+
+      }
       yield put({
         type: 'appDeviceList',
         payload:response,
       });
     },
     *selectCurrentApp({payload},{call,put}){
+      console.log('selectCurrentApp',payload);
       yield put({
         type: 'setCurrentApp',
         payload: payload,
       });
       yield put(
         routerRedux.push({
-          pathname: '/device/devicelist',
+          pathname: '/',
         })
       );
     },
@@ -85,7 +89,7 @@ export default {
       };
     },
     setCurrentApp(state, action) {
-     // console.log('action.payload',action);
+      console.log('setCurrentApp action.payload',action);
       return {
         ...state,
         appInfo:action.payload,

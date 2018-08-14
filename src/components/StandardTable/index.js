@@ -118,8 +118,7 @@ class StandardTable extends PureComponent {
           dataSource={data}
           columns={columns}
           pagination={paginationProps}
-          onChange={this.handleTableChange}
-        />
+          onChange={this.handleTableChange}/>
       </div>
     );
   }

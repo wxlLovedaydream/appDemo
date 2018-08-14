@@ -6,6 +6,5 @@ export async function query() {
 }
 
 export async function queryCurrent(params) {
-
   return request(`/PlatformAPP/currentUser?username=${getUserToken('username')}&timestamp=${Date.parse(new Date())}`);
 }

@@ -2,7 +2,7 @@ import { Register } from '../services/api';
 import { setAuthority } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 import { getPageQuery } from '../utils/utils';
-
+import {message} from 'antd';
 export default {
   namespace: 'register',
   state: {
@@ -42,7 +42,7 @@ export default {
        // yield put(routerRedux.replace(redirect || '/'));
       }else if(response.status==='1'){
         //注册失败
-
+        message.error('注册失败',1);
       }
     },
   },

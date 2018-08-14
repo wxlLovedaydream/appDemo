@@ -33,10 +33,10 @@ export default class SubscribeCallbackUrl extends Component{
       payload:appInfo,
     })
 
-  }
+  };
   onSelectRow = selectedRows =>{
     console.log('selectedRows',selectedRows);
-  }
+  };
   render(){
     const {subscribeUrl} = this.props;
     const {subscriptions=[]} = subscribeUrl;
@@ -58,7 +58,7 @@ export default class SubscribeCallbackUrl extends Component{
           <Icon type='delete'/></Popconfirm>,
       }
     ];
-  const datas = {data:subscriptions}
+  const datas = {data:subscriptions};
     return(<PageHeaderLayout title="订阅接口列表">
 
         <StandardTable
