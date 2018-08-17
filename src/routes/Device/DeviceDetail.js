@@ -117,12 +117,35 @@ export default class DeviceList extends Component{
     }
 
   }
-  deviceCMDSend=(param)=>{
+  deviceCMDSend=(val)=>{
+
+    const { dispatch ,appInfo,deviceList,match} = this.props;
+    const index = match.params.index;
+    const param = {
+      deviceId:deviceList.devices[index].deviceId,
+      gatewayId:deviceList.devices[index].gatewayId,
+      appId:appInfo.appKey,
+      accessToken:appInfo.accessToken,
+      refreshToken:appInfo.refreshToken,
+    };
+  /*  dispatch({
+      type:'devicelist/sendDeviceCMD',
+      payload:param,
+    });*/
+  let sendDeviceCMD= this.sendDeviceCMD(val);
+    sendDeviceCMD.next(param);
+    sendDeviceCMD.next();
+  }
+  *sendDeviceCMD (val){
     const { dispatch } = this.props;
     dispatch({
       type:'devicelist/sendDeviceCMD',
-      payload:param,
-    })
+      payload:val,
+    });
+    yield  dispatch({
+      type:'devicelist/queryDeviceCMD',
+      payload:val,
+    });
   }
 render(){
   const {deviceDetail,deviceCMD,serviceCapabilities,appInfo,

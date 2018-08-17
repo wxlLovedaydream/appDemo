@@ -9,15 +9,20 @@ const RadioButton = Radio.Button;
 const form = Form.form;
 const CreateForm = Form.create()(props => {
   const { modalVisible,form,handleCreateCMD,handleModalVisible,serviceCapabilities,methods,method,
-    handleServiceChange,onMethodChange,handleCMDType,} = props;
+    handleServiceChange,onMethodChange,handleCMDType,data} = props;
 
   //console.log('serviceCapabilities',serviceCapabilities);
-  const deviceCapabilities = serviceCapabilities.deviceCapabilities;
-  const serviceOptions = deviceCapabilities&&deviceCapabilities[0].serviceCapabilities
+const deviceCapabilities = serviceCapabilities.deviceCapabilities;
+ /* const serviceOptions = deviceCapabilities&&deviceCapabilities[0].serviceCapabilities
       .map((cur,index) => <Option key={index} value={index}>{cur.serviceType}</Option>);
 
   const cmdOptions =  deviceCapabilities&&deviceCapabilities[0]
     .serviceCapabilities[methods].commands.map((val,index) =>
+    <Option key={val.commandName} value={index}>{val.commandName}</Option>);*/
+console.log('CreateForm data',data);
+  const serviceOptions = !!data.length&&data.map((cur,index) => <Option key={index} value={index}>{cur.serviceType}</Option>);
+
+  const cmdOptions =  !!data.length&&data[methods].commands.map((val,index) =>
     <Option key={val.commandName} value={index}>{val.commandName}</Option>);
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
@@ -36,13 +41,19 @@ const CreateForm = Form.create()(props => {
 
   }*/
   let tip ='';
-  if(serviceCapabilities.deviceCapabilities){
+
+/*  if(serviceCapabilities.deviceCapabilities){
     const {paraName,dataType,min,max} = deviceCapabilities[0].serviceCapabilities[methods].commands[method].paras[0];
 
     let res = dataType=='int'?`取值区间:[${min}-${min}]`:'';
     tip = `命令名称：${paraName}，数据类型：${dataType}，${res}`;
-  }
+  }*/
+  if(data.length){
+    const {paraName,dataType,min,max} = data[methods].commands[method].paras[0];
 
+    let res = dataType=='int'?`取值区间:[${min}-${min}]`:'';
+    tip = `命令名称：${paraName}，数据类型：${dataType}，${res}`;
+  }
   return (
     <Modal
       title="创建命令"
@@ -51,13 +62,13 @@ const CreateForm = Form.create()(props => {
       onCancel={() => handleModalVisible()}
     >
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="服务">
-        {serviceCapabilities.deviceCapabilities&&
-        <Select defaultValue={deviceCapabilities[0].serviceCapabilities[0].serviceType} onChange={handleServiceChange} style={{width:'100%',}}>
+        {data.length&&
+        <Select defaultValue={data[0].serviceType} onChange={handleServiceChange} style={{width:'100%',}}>
           {serviceOptions}
         </Select>}
       </FormItem>
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="方法">
-        <Select defaultValue={serviceCapabilities.deviceCapabilities&&deviceCapabilities[0].serviceCapabilities[0].commands[0].commandName} onChange={onMethodChange}  style={{width:'100%',}}>
+        <Select defaultValue={data.length&&data[0].commands[0].commandName} onChange={onMethodChange}  style={{width:'100%',}}>
           {cmdOptions}
         </Select>
       </FormItem>
@@ -89,10 +100,48 @@ export default class DeviceCommand extends Component{
     expireTime:0,
     methods :  0,
     method :  0,
+    data:[],
+    hasCMD:true,
   }
   componentDidMount(){
     this.props.form&&this.props.form.validateFields();
+
 }
+ /* shouldComponentUpdate(nextProps, nextState){
+    //console.log('shouldComponentUpdate',nextProps.serviceCapabilities);
+    //console.log('shouldComponentUpdate nextState',nextState);
+    const {data,hasCMD} = this.state;
+    console.log('shouldComponentUpdate flag',nextState.hasCMD&&nextState.data.length==0)
+    return nextState.hasCMD&&data.length==0;
+  }*/
+ /* componentWillUpdate(nextProps, nextState){
+    if(nextProps.serviceCapabilities.deviceCapabilities){
+      const {serviceCapabilities,deviceList,appInfo,} = this.props;
+      console.log('componentWillUpdate .deviceCapabilities',serviceCapabilities);
+      if(serviceCapabilities.deviceCapabilities){
+        const data = serviceCapabilities.deviceCapabilities[0].serviceCapabilities.filter((currentValue, index)=>currentValue.commands.length!=0);
+        let hasCMD = data.length!=0;
+        console.log('DeviceCommand',hasCMD);
+        this.setState({ data:data ,hasCMD:hasCMD });
+      }
+    }
+
+  }*/
+  handleModalVisible = flag => {
+    const {serviceCapabilities,deviceList,appInfo,} = this.props;
+    if(flag&&serviceCapabilities.deviceCapabilities){
+      console.log('componentWillUpdate .deviceCapabilities',serviceCapabilities);
+      if(serviceCapabilities.deviceCapabilities){
+        const data = serviceCapabilities.deviceCapabilities[0].serviceCapabilities.filter((currentValue, index)=>currentValue.commands.length!=0);
+        //let hasCMD = data.length!=0;
+       // console.log('DeviceCommand',hasCMD);
+        this.setState({ data:data });
+      }
+    }
+    this.setState({
+      modalVisible: !!flag,
+    });
+  };
   handleServiceChange = (value) => {
     const {serviceCapabilities,deviceList,appInfo,} = this.props;
    // const met = serviceCapabilities.deviceCapabilities[0].serviceCapabilities[value];
@@ -109,11 +158,7 @@ export default class DeviceCommand extends Component{
     });
   }
 
-  handleModalVisible = flag => {
-    this.setState({
-      modalVisible: !!flag,
-    });
-  };
+
 /*缓存or立即*/
   handleCMDType = (e)=>{
     console.log('handleCMDType',e);
@@ -126,16 +171,17 @@ export default class DeviceCommand extends Component{
     console.log(val);
     const {serviceCapabilities,dispatch,param,deviceCMDSend} = this.props;
     const service = serviceCapabilities.deviceCapabilities[0].serviceCapabilities;
-    const {expireTime, methods ,method ,} = this.state;
+    const {expireTime, methods ,method ,data} = this.state;
     param.expireTime = expireTime;
     const command = {
       ...param,
-      serviceId:service[methods].serviceId,
-      method:service[methods].commands[method].commandName,
+      serviceId:data[methods].serviceId,
+      method:data[methods].commands[method].commandName,
       paras:val.paras,
-      paraName:service[methods].commands[method].paras[0].paraName,
+      paraName:data[methods].commands[method].paras[0].paraName,
      };
     //param.command = command;
+    console.log('handleCreateCMD',command);
     deviceCMDSend(command);
     this.handleModalVisible(false);
     //console.log('handleCreateCMD',command);
@@ -153,7 +199,7 @@ export default class DeviceCommand extends Component{
   };*/
   render(){
     const {tableMenu,deviceCMD,serviceCapabilities } = this.props;
-    const {modalVisible,methods,method} = this.state;
+    const {modalVisible,methods,method,data,hasCMD} = this.state;
    const {pagination} =deviceCMD;
   // console.log('serviceCapabilities',serviceCapabilities);
    const page = pagination&&
@@ -176,16 +222,18 @@ export default class DeviceCommand extends Component{
     //console.log('tableMenu',tableMenu);
     return (<div>
       <div style={{margin:'0px 0px 15px 0px'}}>
-        <Button onClick={() => this.handleModalVisible(true)} type="primary">
+        {hasCMD&& <Button onClick={() => this.handleModalVisible(true)} type="primary">
           <Icon type="plus" /> 创建命令
         </Button>
+        }
       </div>
 
       <div style={{backgroundColor:'white',}}>
         <Table
           columns={tableMenu}
           dataSource={deviceCMD.data}
-          pagination={page}/>
+          pagination={page}
+        />
       </div>
 
 {/*
@@ -225,7 +273,7 @@ export default class DeviceCommand extends Component{
                   methods={methods}
                   method={method}
                   serviceCapabilities={serviceCapabilities}
-                  modalVisible={modalVisible} />
+                  modalVisible={modalVisible} data={data}/>
     </div>)
   }
 }

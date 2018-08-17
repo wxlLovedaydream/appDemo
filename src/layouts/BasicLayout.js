@@ -128,14 +128,13 @@ class BasicLayout extends React.PureComponent {
   }
   initalApp = list =>{
 
-    const { dispatch,appInfo} = this.props;
-    console.log('initalApp',);
-    if(list.length>0&&!appInfo.appKey){
-
-      dispatch({
-        type: 'devicelist/setCurrentApp',
-        payload: list[0],
-      });
+    const { dispatch,appInfo,errorToken} = this.props;
+    console.log('initalApp',errorToken);
+    if(list.length>0&&errorToken!='0'){
+        dispatch({
+          type: 'devicelist/setCurrentApp',
+          payload: list.length>0?list[0]:{},
+        });
     }
   }
   getPageTitle() {
@@ -203,6 +202,15 @@ class BasicLayout extends React.PureComponent {
     if (key === 'logout') {
       dispatch({
         type: 'login/logout',
+      });
+      dispatch({
+        type: 'devicelist/loginoutReset',
+      });
+      dispatch({
+        type: 'appinfoLists/loginoutReset',
+      });
+      dispatch({
+        type: 'subscribelist/loginoutReset',
       });
     }
   };
@@ -348,6 +356,7 @@ export default connect(({ user, global = {}, loading,appinfoLists,devicelist }) 
   collapsed: global.collapsed,
   fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,
-  appInfo:devicelist.appInfo
+  appInfo:devicelist.appInfo,
+  errorToken:devicelist.errorToken
 
 }))(BasicLayout);

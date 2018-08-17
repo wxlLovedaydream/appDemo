@@ -20,11 +20,10 @@ export default {
      console.log('response',response);
       if(response.status==='OK'){
         reloadAuthorized();
+        message.success('注册成功，请登录！',1);
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
-        /*console.log('urlParams',urlParams);
-        console.log('params',params);*/
         let url = `${urlParams.origin}/#/user/login`;
        window.location.href = url;
       /*  if (redirect) {

@@ -1,5 +1,6 @@
 import {Component} from 'react';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import moment from 'moment';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import StandardTable from 'components/StandardTable';
@@ -24,16 +25,31 @@ export default class SubscribeCallbackUrl extends Component{
     console.log(val);
     const param ={...appInfo,subscriptionId:val};
     //param.subscriptionId = val;
+/*
     dispatch({
       type:'subscribelist/deleteSubscribeUrl',
       payload:param,
     });
-    dispatch({
-      type:'subscribelist/fetchSubscribeNotifyType',
-      payload:appInfo,
-    })
+*/
+   let ctrl =  this.fetchSubscribe(param);
+    ctrl.next(appInfo);
+    ctrl.next();
 
   };
+  *fetchSubscribe(val){
+    const {dispatch,appInfo} = this.props;
+
+    dispatch({
+      type:'subscribelist/deleteSubscribeUrl',
+      payload:val,
+    });
+   // console.log('fetchSubscribe',val);
+    yield dispatch({
+      type:'subscribelist/fetchSubscribeNotifyType',
+      payload:val,
+    });
+
+  }
   onSelectRow = selectedRows =>{
     console.log('selectedRows',selectedRows);
   };
@@ -65,7 +81,6 @@ export default class SubscribeCallbackUrl extends Component{
           columns={columns}
           data={datas}
         />
-      {/*  <Table columns={columns}    dataSource={subscriptions}/>*/}
 
 
     </PageHeaderLayout>);

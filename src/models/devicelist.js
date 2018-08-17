@@ -16,14 +16,30 @@ export default {
     serviceCapabilities:{},
     deviceCMDResponse:{},
     deviceHistoryData:{},
+    errorToken:'1',
   },
-
+/*errorToken:0 不超时*/
   effects: {
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryDeviceList, payload);
       // console.log('GetAppinfos',payload);
-      if(response.error_code==''){
-
+      if(payload.appKey&&response.resultcode=='1010005'){
+        message.info('Token 超时！',1);
+        yield put({
+          type:'setErrorToken',
+          payload:response.resultcode,
+        });
+        yield put(
+          routerRedux.replace({
+            pathname: '/'
+          })
+        )
+        return ;
+      }else{
+        yield put({
+          type:'setErrorToken',
+          payload:'0',
+        });
       }
       yield put({
         type: 'appDeviceList',
@@ -34,7 +50,7 @@ export default {
       console.log('selectCurrentApp',payload);
       yield put({
         type: 'setCurrentApp',
-        payload: payload,
+        payload: payload.appKey?payload:[],
       });
       yield put(
         routerRedux.push({
@@ -78,6 +94,12 @@ export default {
         payload:response,
       });
     },
+    *loginoutReset({},{call,put}){
+
+      yield put({
+        type:'resetAll',
+      });
+    },
   },
 
   reducers: {
@@ -86,6 +108,13 @@ export default {
       return {
         ...state,
         deviceList: action.payload,
+      };
+    },
+    setErrorToken(state, action) {
+      //console.log('appDeviceList',action);
+      return {
+        ...state,
+        errorToken: action.payload,
       };
     },
     setCurrentApp(state, action) {
@@ -123,6 +152,21 @@ export default {
       return{
         ...state,
         deviceHistoryData:action.payload,
+      }
+    },
+    resetAll(state,action){
+
+      return{
+        ...state,
+        appInfo: {},
+        username: getUserToken('username'),
+        deviceList:{},
+        deviceDetail:{},
+        deviceCMD:{},
+        serviceCapabilities:{},
+        deviceCMDResponse:{},
+        deviceHistoryData:{},
+        errorToken:'1',
       }
     }
 

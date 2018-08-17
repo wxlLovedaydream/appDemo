@@ -16,8 +16,8 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(AccountLogin, payload);
-     console.log('AccountLogin',response);
-      let res ={...response} ;
+    // console.log('AccountLogin',response);
+      let res ={...response};
       if(response.statuscode=='0'){
         //成功
         res.currentAuthor='user';
@@ -67,7 +67,12 @@ export default {
         }
        // console.log('url',url)
         console.log('redirect',redirect);
-        yield put(routerRedux.replace('/'));
+        yield put(
+          routerRedux.push({
+            pathname: '/',
+          })
+        );
+       // yield put(routerRedux.replace('/'));
       //  yield put(routerRedux.replace( redirect || '/'));
       }
     },

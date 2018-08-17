@@ -125,14 +125,24 @@ export default class Register extends Component {
           visible: !!value,
         });
       }
-      if (value.length < 6) {
+      if (value.length < 8) {
         callback('error');
-      } else {
-        const { form } = this.props;
-        if (value && confirmDirty) {
-          form.validateFields(['confirm'], { force: true });
+      }else {
+       const reg = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}');
+        if(!reg.test(value)){
+          this.setState({
+            help: '必须包含大小写字母，数字，特殊字符！',
+            visible: !!value,
+          });
+          callback('error');
+        }else{
+          const { form } = this.props;
+          if (value && confirmDirty) {
+            form.validateFields(['confirm'], { force: true });
+          }
+          callback();
         }
-        callback();
+
       }
     }
   };
@@ -152,7 +162,7 @@ export default class Register extends Component {
         <Progress
           status={passwordProgressMap[passwordStatus]}
           className={styles.progress}
-          strokeWidth={6}
+          strokeWidth={8}
           percent={value.length * 10 > 100 ? 100 : value.length * 10}
           showInfo={false}
         />
@@ -174,10 +184,13 @@ export default class Register extends Component {
                 {
                   required: true,
                   message: '用户名',
-                },
+                },{
+                  min:8,
+                  message:'用户名长度至少为8！'
+                }
 
               ],
-            })(<Input size="large" placeholder="用户名" />)}
+            })(<Input size="large" placeholder="用户名，长度至少为8！" />)}
           </FormItem>
          {/* <FormItem>
             {getFieldDecorator('mail', {
@@ -200,7 +213,7 @@ export default class Register extends Component {
                   {passwordStatusMap[this.getPasswordStatus()]}
                   {this.renderPasswordProgress()}
                   <div style={{ marginTop: 10 }}>
-                    请至少输入 6 个字符。请不要使用容易被猜到的密码。
+                    请至少输入 8 个字符。必须包含数字，大写字母，小写字母，特殊字符！
                   </div>
                 </div>
               }
@@ -214,7 +227,7 @@ export default class Register extends Component {
                     validator: this.checkPassword,
                   },
                 ],
-              })(<Input size="large" type="password" placeholder="至少6位密码，区分大小写" />)}
+              })(<Input size="large" type="password" placeholder="至少8位密码，区分大小写" />)}
             </Popover>
           </FormItem>
           <FormItem>

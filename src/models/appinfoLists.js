@@ -11,25 +11,35 @@ export default {
   effects: {
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryAppinfos, payload);
-      // console.log('GetAppinfos',payload);
+       console.log('GetAppinfos',response);
         yield put({
         type: 'appList',
-        payload: Array.isArray(response) ? response : [],
+        payload:response.length>0 ? response : [],
       });
     },
     *add({payload},{call,put}){
       const response = yield call(addApp, payload);
-      const {res,appKey,appSecret}= response;
+      const {res,appKey,appSecret,error_code}= response;
       const appinfo= [{...response},];
       //console.log('appinfo',appinfo);
       if(res=='0'){
-        message.success('添加成功');
+        message.success('添加成功',1);
       }else{
-        message.error('添加失败');
+        let err =' 添加失败';
+        if(error_code=='100208'){
+          err +=`: 应用ID或秘钥不正确！`;
+        }
+        message.error(err,1);
       }
       yield put({
         type: 'append',
         payload: res=='0'?appinfo:null,
+      });
+    },
+    *loginoutReset({},{call,put}){
+
+      yield put({
+        type:'resetAll',
       });
     },
   /*  *appendFetch({ payload }, { call, put }) {
@@ -58,5 +68,12 @@ export default {
         username:getUserToken('username'),
       };
     },
+    resetAll(state, action){
+      return {
+        ...state,
+        list: [],
+        username:getUserToken('username'),
+      };
+    }
   },
 };

@@ -1,5 +1,6 @@
 import {subscribeInterface ,getSubscribeUrl,deleteSubscribe,queryDeviceDataChanged} from '../services/api';
 import {message} from 'antd';
+import { getUserToken } from '../utils/authority';
 export default {
   namespace: 'subscribelist',
 
@@ -45,7 +46,12 @@ export default {
         type: 'setDeviceDataChanged',
         payload: response,
       });
-    }
+    },
+    *loginoutReset({},{call,put}){
+      yield put({
+        type:'resetAll',
+      });
+    },
   },
 
   reducers: {
@@ -66,6 +72,14 @@ export default {
       return {
         ...state,
         deviceDataChanged:action.payload,
+      };
+    },
+    resetAll(state, action){
+      return {
+        ...state,
+        subscribeResponse:{},
+        subscribeUrl:{},
+        deviceDataChanged:[],
       };
     }
 

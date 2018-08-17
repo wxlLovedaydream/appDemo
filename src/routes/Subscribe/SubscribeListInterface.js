@@ -10,7 +10,7 @@ const Meta = Card.Meta;
 const FormItem = Form.Item;
 const CreateForm = Form.create()(
   props => {
-    const { modalVisible, form, handleSubscribe, handleModalVisible } = props;
+    const { modalVisible, form, handleSubscribe, handleModalVisible ,cardData} = props;
   //  console.log(handleModalVisible);
     const okHandle = () => {
       form.validateFields((err, fieldsValue) => {
@@ -21,15 +21,16 @@ const CreateForm = Form.create()(
     };
     return (
       <Modal
-        title="订阅数据"
+        title="订阅设备变化数据"
         visible={modalVisible}
         onOk={okHandle}
         onCancel={() => handleModalVisible({flag:false})}>
-        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="回调地址">
+          <span>IoT平台接收到设备数据变化（动态变化，如，服务属性值的变化）</span>
+        {/*<FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="回调地址">
           {form.getFieldDecorator('callbackurl', {
             rules: [{ required: true, message: '请输入正确的回调地址...' }],
           })(<Input addonBefore="http://" placeholder="callbackurl:port"/>)}
-        </FormItem>
+        </FormItem>*/}
       </Modal>
     );
   }
@@ -42,19 +43,21 @@ export default class SubscribeList extends Component{
   state = {
     modalVisible:false,
     notifyType:'',
+    cardData:{},
   };
   handleModalVisible = (val,e) =>{
     console.log(val);
-    const {flag ,notifyType}= val;
+    const {flag ,notifyType,cardData}= val;
     this.setState({
       modalVisible:!!flag,
     });
-if(notifyType){this.setNotifyType(notifyType);}
+if(notifyType){this.setNotifyType(notifyType,cardData);}
 
   };
-  setNotifyType = (notifyType) =>{
+  setNotifyType = (notifyType,cardData) =>{
     this.setState({
       notifyType:notifyType,
+      cardData:cardData
     });
   }
   handleSubscribe = (fields) =>{
@@ -64,13 +67,14 @@ if(notifyType){this.setNotifyType(notifyType);}
     this.setState({
       modalVisible:false,
     })
+  /*  callbackurl:`http://${fields.callbackurl}/PlatformAPP/PushDeviceDataChanged`,*/
     const param = {
-      callbackurl:`http://${fields.callbackurl}/PushDeviceDataChanged`,
+      callbackurl:`http://180.103.210.10:38081/PlatformAPP/PushDeviceDataChanged`,
       appId:appInfo.appKey,
       accessToken:appInfo.accessToken,
       notifyType:notifyType,
     }
-    console.log('handleSubscribe',param);
+   // console.log('handleSubscribe',param);
     dispatch({
       type:'subscribelist/sendSubscribeNotifyType',
       payload:param,
@@ -99,7 +103,7 @@ if(notifyType){this.setNotifyType(notifyType);}
             <List.Item>
               <Card hoverable title={item.title}
                     extra={<Button type="primary" onClick={
-                      e => {this.handleModalVisible({flag:true,notifyType:item.notifyType})}} >
+                      e => {this.handleModalVisible({flag:true,cardData:item,notifyType:item.notifyType,})}} >
                       <Icon type="plus"/>订阅</Button>}
                     className={styles.card} >
                 <Meta description={ item.description}/>

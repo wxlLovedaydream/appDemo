@@ -108,7 +108,7 @@ export async function subscribeInterface(params){
   return request(`/PlatformAPP/SubscribeInterface?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
 }
 export async function getSubscribeUrl(params){
-  return request(`/PlatformAPP/GetSubscribeInterface?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+  return request(`/PlatformAPP/GetSubscribeInterface?timestamp=${Date.parse(new Date())}&${stringify(params)}`)
 }
 export async function deleteSubscribe(params){
   return request(`/PlatformAPP/DeleteSubscribe?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
