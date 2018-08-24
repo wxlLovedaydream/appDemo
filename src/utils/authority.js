@@ -5,10 +5,11 @@ export function getAuthority() {
 }
 
 export function setAuthority(authority) {
+  //console.log(localStorage.getItem('username'));
   return sessionStorage.setItem('authority', authority);
 }
 export function getUserToken(){
-  //console.log(localStorage.getItem('username'))
+  console.log('getUserToken',sessionStorage.getItem('username'));
   return sessionStorage.getItem('username');
 };
 export function setUserToken(username){

@@ -188,7 +188,7 @@ export default class GlobalHeader extends Component {
                      defaultValue={list[0].appKey} ref='myselect'
                     onChange={this.handleSelectApp}>
             { list.map((value, index, array)=>{
-              return (<Option value={value.appKey} key={value.appKey}>{value.appKey} </Option>)
+              return (<Option value={value.appKey} key={value.appKey}>{value.appName} </Option>)
             })}</Select>}
           {currentUser.name ? (
             <Dropdown overlay={menu}>

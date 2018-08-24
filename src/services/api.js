@@ -119,6 +119,13 @@ export async function deleteBatchSubscribe(params){
 export async function queryDeviceDataChanged(params){
   return request(`/PlatformAPP/QueryDeviceDataChanged?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
 }
+export async function registerDevice(params){
+  return request(`/PlatformAPP/RegisterDevice?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+export async function modifyDeviceInfo(params){
+  return request(`/PlatformAPP/ModifyDeviceInfo?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+
 
 
 

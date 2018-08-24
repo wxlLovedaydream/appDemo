@@ -175,6 +175,9 @@ const menuData = [
       {
         name:'设备列表',
         path:'devicelist',
+      },{
+      name:'注册设备',
+        path:'deviceregister'
       }
     ]
   },{

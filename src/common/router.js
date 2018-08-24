@@ -3,6 +3,7 @@ import { Spin } from 'antd';
 import pathToRegexp from 'path-to-regexp';
 import Loadable from 'react-loadable';
 import { getMenuData } from './menu';
+import DeviceRegister from '../routes/Device/DeviceRegister';
 
 let routerDataCache;
 
@@ -84,6 +85,10 @@ export const getRouterData = app => {
     '/device/devicedetail/:index':{
       name:'设备详情',
       component:dynamicWrapper(app, ['devicelist'], () => import('../routes/Device/DeviceDetail')),
+    },
+    '/device/deviceregister':{
+      name:'设备注册',
+      component:dynamicWrapper(app, ['devicelist'], () => import('../routes/Device/DeviceRegister')),
     },
     '/subscribe/subscribeurl':{
       name:'订阅列表',

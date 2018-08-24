@@ -33,7 +33,7 @@ export default {
         res.currentAuthor='guest';
         res.type= 'account';
       }
-      console.log('AccountLogin',res);
+     // console.log('AccountLogin',res);
       yield put({
         type: 'changeLoginStatus',
         payload: res,
@@ -45,20 +45,20 @@ export default {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
-        console.log('redirect',redirect);
+        //console.log('redirect',redirect);
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
           if (redirectUrlParams.origin === urlParams.origin) {
-            console.log('redirectUrlParams.origin',redirectUrlParams);
-            console.log('urlParams',urlParams);
+           // console.log('redirectUrlParams.origin',redirectUrlParams);
+           // console.log('urlParams',urlParams);
             redirect = redirect.substr(urlParams.origin.length);
            /* if (redirect.startsWith('/#')) {
               redirect = redirect.substr(2);
             }*/
-            console.log('redirect',redirect.indexOf('#'));
+            //console.log('redirect',redirect.indexOf('#'));
             if (redirect.indexOf('#')!=-1) {
               redirect = redirect.substr(redirect.indexOf('#'));
-              console.log('redirect',redirect.indexOf('/#'));
+             // console.log('redirect',redirect.indexOf('/#'));
             }
           } else {
             window.location.href = redirect;
@@ -66,7 +66,7 @@ export default {
           }
         }
        // console.log('url',url)
-        console.log('redirect',redirect);
+       // console.log('redirect',redirect);
         yield put(
           routerRedux.push({
             pathname: '/',
@@ -99,7 +99,7 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-     // console.log("changeLoginStatus",payload);
+     console.log("changeLoginStatus",payload);
       setAuthority(payload.currentAuthor);
       setUserToken(payload.username);
       //console.log("setAuthority",payload);

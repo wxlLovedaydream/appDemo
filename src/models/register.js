@@ -3,6 +3,7 @@ import { setAuthority } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 import { getPageQuery } from '../utils/utils';
 import {message} from 'antd';
+import { routerRedux } from 'dva/router';
 export default {
   namespace: 'register',
   state: {
@@ -19,13 +20,19 @@ export default {
       //注册成功
      console.log('response',response);
       if(response.status==='OK'){
-        reloadAuthorized();
+       // reloadAuthorized();
         message.success('注册成功，请登录！',1);
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
         let url = `${urlParams.origin}/#/user/login`;
-       window.location.href = url;
+        console.log('urlParams',urlParams);
+        yield put(
+          routerRedux.push({
+            pathname: '/user/login',
+          })
+        );
+      // window.location.href = url;
       /*  if (redirect) {
           const redirectUrlParams = new URL(redirect);
           if (redirectUrlParams.origin === urlParams.origin) {

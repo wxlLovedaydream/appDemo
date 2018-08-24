@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Link } from 'dva/router';
-import { Tabs } from 'antd';
+import { Link,routerRedux } from 'dva/router';
+import { Tabs ,Button,Icon} from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import DeviceBasic from '../../components/Device/DeviceBasic';
 import DeviceCommand from '../../components/Device/DeviceCommand';
@@ -147,6 +147,12 @@ export default class DeviceList extends Component{
       payload:val,
     });
   }
+  backToDeviceList = () =>{
+    console.log('backToDeviceList');
+    routerRedux.replace({
+      pathname: '/device/devicelist',
+    })
+  }
 render(){
   const {deviceDetail,deviceCMD,serviceCapabilities,appInfo,
     deviceList,match,deviceHistoryData} = this.props;
@@ -204,6 +210,9 @@ render(){
   ];
   return (
     <PageHeaderLayout title="设备详情">
+{/*      <Button onClick={this.backToDeviceList}>
+        <Icon type="left" />返回
+        </Button>*/}
       <Tabs defaultActiveKey="basic" onChange={this.callback}>
         {columns.map((curr)=> <TabPane tab={curr.title} key={curr.key}>{curr.component}</TabPane>)}
       </Tabs>

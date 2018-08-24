@@ -18,7 +18,9 @@ export default {
       });
     },
     *add({payload},{call,put}){
-      const response = yield call(addApp, payload);
+      const param ={...payload,username:getUserToken('username')} ;
+      console.log('add app',param);
+      const response = yield call(addApp, param);
       const {res,appKey,appSecret,error_code}= response;
       const appinfo= [{...response},];
       //console.log('appinfo',appinfo);

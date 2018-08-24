@@ -25,12 +25,17 @@ const CreateForm = Form.create()(props => {
 
       onCancel={() => handleModalVisible()}
     >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="appKey">
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 16 }} label="应用名称">
+        {form.getFieldDecorator('appName', {
+          rules: [{ required: true, message: '请输入应用名称' }],
+        })(<Input placeholder="请输入应用的名称"/>)}
+      </FormItem>
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 16 }} label="应用key">
         {form.getFieldDecorator('appKey', {
           rules: [{ required: true, message: '请输入正确的key...' }],
         })(<Input placeholder="请输入应用的key"/>)}
       </FormItem>
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="appSecret">
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 16 }} label="应用Secret">
         {form.getFieldDecorator('appSecret', {
           rules: [{ required: true, message: '请输入正确的secret...' }],
         })(<Input placeholder="请输入应用的secret"/>)}
@@ -53,7 +58,7 @@ export default class Appinfos extends Component{
   componentDidMount(){
     const { dispatch ,appinfoLists} = this.props;
     const {username}=appinfoLists;
-   // console.log('appinfoLists/fetch',appinfoLists);
+  console.log('appinfoLists/fetch',appinfoLists);
 
       this.setState({
         username: username,
@@ -72,14 +77,12 @@ export default class Appinfos extends Component{
   };
   handleAdd = fields => {
     const { dispatch } = this.props;
-    console.log('fields',fields);
-    console.log('username',this.state.username);
+   // console.log('fields',fields);
+   // console.log('handleAdd username',this.state.username);
     dispatch({
       type: 'appinfoLists/add',
       payload: {
-        appKey:fields.appKey,
-        appSecret:fields.appSecret,
-        username:this.state.username,
+        ...fields,
       },
     });
     this.setState({
@@ -117,14 +120,14 @@ export default class Appinfos extends Component{
                   <List.Item key={item.appKey} data-secret={item.appSecret}>
                     <Card hoverable className={styles.card} >
                       <Card.Meta
-                        title={<a href="#">应用信息</a>}
+                        title={<a href="#">应用名称：{item.appName}</a>}
                         description={
                           <Ellipsis className={styles.item} lines={5}>
                             <span> key</span>: {item.appKey}<br/>
                              <span>secret</span>: {item.appSecret}<br/>
                             <span>token</span>:{item.accessToken}<br/>
                             <span>refresh</span>:{item.refreshToken}<br/>
-                            <span>expiresIn</span>: {item.expiresIn}<br/>
+                           {/* <span>expiresIn</span>: {item.expiresIn}<br/>*/}
                           </Ellipsis>
                         }
                       />

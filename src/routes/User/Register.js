@@ -178,20 +178,24 @@ export default class Register extends Component {
       <div className={styles.main}>
         <h3>注册</h3>
         <Form onSubmit={this.handleSubmit}>
-          <FormItem>
+          <FormItem  label="用户名">
             {getFieldDecorator('username', {
               rules: [
                 {
                   required: true,
-                  message: '用户名',
+                  message: '请输入用户名',
                 },{
-                  min:8,
-                  message:'用户名长度至少为8！'
-                }
+                  len:11,
+                  message:'用户名为手机号码！'
+                },{
+                  pattern:/^1\d{10}$/,
+                  message:'请输入正确的用户名'
+            }
 
               ],
-            })(<Input size="large" placeholder="用户名，长度至少为8！" />)}
+            })(<Input size="large" placeholder="用户名为手机号码" />)}
           </FormItem>
+
          {/* <FormItem>
             {getFieldDecorator('mail', {
               rules: [
@@ -206,7 +210,7 @@ export default class Register extends Component {
               ],
             })(<Input size="large" placeholder="邮箱" />)}
           </FormItem>*/}
-          <FormItem help={help}>
+          <FormItem help={help} label="密码">
             <Popover
               content={
                 <div style={{ padding: '4px 0' }}>
@@ -225,12 +229,15 @@ export default class Register extends Component {
                 rules: [
                   {
                     validator: this.checkPassword,
-                  },
+                  },{
+                    required: true,
+                    message:'请输入密码'
+                  }
                 ],
               })(<Input size="large" type="password" placeholder="至少8位密码，区分大小写" />)}
             </Popover>
           </FormItem>
-          <FormItem>
+          <FormItem label="确认密码">
             {getFieldDecorator('confirm', {
               rules: [
                 {
@@ -242,6 +249,30 @@ export default class Register extends Component {
                 },
               ],
             })(<Input size="large" type="password" placeholder="确认密码" />)}
+          </FormItem>
+          <FormItem label="地区">
+            <Row gutter={8}>
+              <Col span={12}>
+                {getFieldDecorator('province', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入省名称！',
+                    }
+                  ],
+                })(<Input size="large" placeholder="省名称" />)}
+              </Col>
+              <Col span={12}>
+                {getFieldDecorator('city', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入市名称！',
+                    }
+                  ],
+                })(<Input size="large" placeholder="市名称" />)}
+              </Col>
+            </Row>
           </FormItem>
          {/* <FormItem>
             <InputGroup compact>

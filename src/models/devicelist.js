@@ -1,5 +1,5 @@
 import { queryDeviceList,queryDeviceDetail ,queryDeviceCommand,queryDeviceCapabilities,
-  sendCommands,queryDeviceHistoryData} from '../services/api';
+  sendCommands,queryDeviceHistoryData,registerDevice,modifyDeviceInfo} from '../services/api';
 import {getUserToken } from '../utils/authority';
 import {message} from 'antd';
 import { routerRedux } from 'dva/router';
@@ -94,12 +94,44 @@ export default {
         payload:response,
       });
     },
+    *registerDevice({payload},{call,put}){
+     const {appInfo,device} = payload;
+      console.log('registerDevice',payload);
+
+      const response = yield call(registerDevice,{...appInfo,verifyCode:device.verifyCode});
+      if(response.status=='400'){
+        message.error('设备验证码已存在或者该设备已注册');
+      }else  if(response.deviceId){
+        // console.log('response',response);
+        // yield call(modifyDeviceInfo,{appKey:appInfo.appKey,accessToken:appInfo.accessToken,deviceId:'b0bca13f-8a97-4ac7-9c60-23bb2999646b',...device});
+
+        yield call(modifyDeviceInfo,{appKey:appInfo.appKey,accessToken:appInfo.accessToken,deviceId:response.deviceId,...device});
+     /*   routerRedux.push({
+          pathname: '/device/devicelist',
+        })*/
+        message.success('设备注册成功！',1);
+        yield put(
+          routerRedux.push({
+            pathname: '/device/devicelist',
+          })
+        );
+      }else{
+        message.error('注册失败');
+      }
+
+
+ /*     yield put({
+        type:'setDeviceHistoryData',
+        payload:response,
+      });*/
+    },
     *loginoutReset({},{call,put}){
 
       yield put({
         type:'resetAll',
       });
     },
+
   },
 
   reducers: {

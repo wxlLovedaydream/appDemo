@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import moment from 'moment';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import StandardTable from 'components/StandardTable';
-import {Table,} from 'antd';
+import {Table,Icon,Popconfirm} from 'antd';
 import { Link } from 'dva/router';
 @connect(({ devicelist }) => ({
   appInfo:devicelist.appInfo,
@@ -66,6 +66,14 @@ export default class DeviceList extends Component{
         title:'创建时间',
         dataIndex:'createTime',
          render:val => <span>{moment(val).format('YYYY-MM-DD ')||'— —'}</span>,
+
+      },
+      {
+        title:'操作',
+        dataIndex:'deviceInfo.nodeId',
+        key:'hihi',
+        render:val => <span>
+          <Popconfirm title="Are you sure？"> <a href="#"><Icon type="edit" /></a></Popconfirm>  <a href="#"><Icon type="delete" /></a> </span>,
 
       },
 

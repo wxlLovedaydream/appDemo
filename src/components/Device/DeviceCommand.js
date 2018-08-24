@@ -51,7 +51,8 @@ console.log('CreateForm data',data);
   if(data.length){
     const {paraName,dataType,min,max} = data[methods].commands[method].paras[0];
 
-    let res = dataType=='int'?`取值区间:[${min}-${min}]`:'';
+    let res = dataType=='int'?`取值区间:[${min}-${max}]`:'';
+
     tip = `命令名称：${paraName}，数据类型：${dataType}，${res}`;
   }
   return (
