@@ -26,6 +26,19 @@ export default class DeviceList extends Component{
     console.log(page);
     console.log(pageSize);
   }
+  handleDeleteDevice = deviceId =>{
+    // console.log(item);
+
+    const {dispatch,appInfo,deviceList} = this.props;
+    const param = {...appInfo,deviceId}
+    //const {appInfo} = devicelist;
+    console.log('appInfo',appInfo);
+    dispatch({
+      type:'devicelist/deleteSingleDevice',
+      payload:param,
+    });
+  }
+
   render(){
     const {  deviceList, } = this.props;
     const datas = {
@@ -33,12 +46,18 @@ export default class DeviceList extends Component{
       pagination:deviceList.pagination,
       onChange :this.onPageChange
     };
+    const devicestatus = {
+        'ONLINE':'在线',
+        'OFFLINE':'离线',
+        'ABNORMAL':'异常',
+    }
     //console.log(appInfo);
     const columns = [
       {
         title: '状态',
         dataIndex: 'deviceInfo.status',
-       /* render:value=><Link >{value}</Link>*/
+        render:value=><span >{devicestatus[value]}</span>
+
       },{
         title:'名称',
         dataIndex:'deviceInfo.name',
@@ -70,10 +89,9 @@ export default class DeviceList extends Component{
       },
       {
         title:'操作',
-        dataIndex:'deviceInfo.nodeId',
-        key:'hihi',
-        render:val => <span>
-          <Popconfirm title="Are you sure？"> <a href="#"><Icon type="edit" /></a></Popconfirm>  <a href="#"><Icon type="delete" /></a> </span>,
+        dataIndex:'deviceId',
+        key:'deviceInfo',
+        render:(val) => <Popconfirm title="确定删除该设备吗？"  onConfirm={()=>this.handleDeleteDevice(val)}>  <Icon type="delete" /> </Popconfirm> ,
 
       },
 

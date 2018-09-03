@@ -133,13 +133,13 @@ export default class DeviceRegister extends Component{
           )}
         </FormItem>
         {/*Asia/Beijing*/}
-{/*        <FormItem  {...formItemLayout} label="时区">
+ {/*       <FormItem  {...formItemLayout} label="时区">
           {getFieldDecorator('timezone', {
             rules: [{ required: true, message: '请输入设备的时区' }],
-            initialValue:"Asia/Beijing",
+            initialValue:"Asia/Chongqing",
           })(
             <Select size="large">
-              <Option value="Asia/Beijing">北京时区（Asia/Beijing）</Option>
+              <Option value="Asia/Chongqing">北京时区（Asia/Beijing）</Option>
             </Select>
           )}
         </FormItem>*/}

@@ -15,7 +15,7 @@ export default class HistoryData extends Component{
     console.log(deviceHistoryData);
     const pagination = {
 
-        current:deviceHistoryData.pageNo||1,
+        current:deviceHistoryData?deviceHistoryData.pageNo:1,
         pageSize:10,
       //deviceHistoryData.pageSize,
     }

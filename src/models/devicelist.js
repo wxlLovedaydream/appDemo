@@ -1,5 +1,5 @@
 import { queryDeviceList,queryDeviceDetail ,queryDeviceCommand,queryDeviceCapabilities,
-  sendCommands,queryDeviceHistoryData,registerDevice,modifyDeviceInfo} from '../services/api';
+  sendCommands,queryDeviceHistoryData,registerDevice,modifyDeviceInfo,deleteDevice} from '../services/api';
 import {getUserToken } from '../utils/authority';
 import {message} from 'antd';
 import { routerRedux } from 'dva/router';
@@ -124,6 +124,20 @@ export default {
         type:'setDeviceHistoryData',
         payload:response,
       });*/
+    },
+    *deleteSingleDevice({payload},{call,put}){
+      console.log('deleteSingleDevice',payload)
+      const res = yield call(deleteDevice,payload);
+      if(response.status=='204'){
+        message.success('设备删除成功！',1);
+        yield put(
+          routerRedux.push({
+            pathname: '/device/devicelist',
+          })
+        );
+      }else{
+        message.error('设备删除失败！',1);
+      }
     },
     *loginoutReset({},{call,put}){
 

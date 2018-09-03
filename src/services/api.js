@@ -125,6 +125,16 @@ export async function registerDevice(params){
 export async function modifyDeviceInfo(params){
   return request(`/PlatformAPP/ModifyDeviceInfo?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
 }
+export async function getDevicePushHistory(params){
+  return request(`/PlatformAPP/GetDevicePushHistory?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+export async function deleteAppInfo(params){
+  return request(`/PlatformAPP/DeleteAppInfo?username=${getUserToken('username')}&${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+export async function deleteDevice(params){
+  return request(`/PlatformAPP/DeleteDevice?${stringify(params)}&timestamp=${Date.parse(new Date())}`)
+}
+
 
 
 

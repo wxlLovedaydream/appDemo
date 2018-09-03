@@ -1,4 +1,5 @@
-import {subscribeInterface ,getSubscribeUrl,deleteSubscribe,queryDeviceDataChanged} from '../services/api';
+import {subscribeInterface ,getSubscribeUrl,deleteSubscribe,queryDeviceDataChanged,
+  getDevicePushHistory} from '../services/api';
 import {message} from 'antd';
 import { getUserToken } from '../utils/authority';
 export default {
@@ -8,6 +9,7 @@ export default {
     subscribeResponse:{},
     subscribeUrl:{},
     deviceDataChanged:[],
+    devicePushHistory:[],
   },
 
   effects: {
@@ -47,6 +49,13 @@ export default {
         payload: response,
       });
     },
+    *fetchDevicePushHistory({ payload }, { call, put }){
+      const response = yield call(getDevicePushHistory, payload);
+      yield put({
+        type: 'setDevicePushHistory',
+        payload: response,
+      });
+    },
     *loginoutReset({},{call,put}){
       yield put({
         type:'resetAll',
@@ -74,12 +83,19 @@ export default {
         deviceDataChanged:action.payload,
       };
     },
+    setDevicePushHistory(state, action){
+      return {
+        ...state,
+        devicePushHistory:action.payload,
+      };
+    },
     resetAll(state, action){
       return {
         ...state,
         subscribeResponse:{},
         subscribeUrl:{},
         deviceDataChanged:[],
+        devicePushHistory:[],
       };
     }
 

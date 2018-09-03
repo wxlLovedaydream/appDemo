@@ -102,6 +102,10 @@ export const getRouterData = app => {
       name:'数据推送',
       component:dynamicWrapper(app, ['subscribelist'], () => import('../routes/Subscribe/PushMessage')),
     },
+    '/subscribe/detail/:deviceId':{
+      name:'数据详情',
+      component:dynamicWrapper(app, ['subscribelist'], () => import('../routes/Subscribe/PushMessageDetail')),
+    },
     '/dashboard/analysis': {
       component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),
     },
@@ -185,6 +189,9 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['error'], () =>
         import('../routes/Exception/triggerException')
       ),
+    },
+    '/total/chart': {
+      component: dynamicWrapper(app, [], () => import('../routes/Total/Analysis')),
     },
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),

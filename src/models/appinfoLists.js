@@ -1,5 +1,6 @@
-import { queryAppinfos,addApp } from '../services/api';
+import { queryAppinfos,addApp,deleteAppInfo } from '../services/api';
 import {getUserToken } from '../utils/authority';
+import { routerRedux } from 'dva/router';
 import {message} from 'antd';
 export default {
   namespace: 'appinfoLists',
@@ -31,12 +32,24 @@ export default {
         if(error_code=='100208'){
           err +=`: 应用ID或秘钥不正确！`;
         }
+        if(res=='2'){
+          err +=`: 应用已存在！`;
+        }
         message.error(err,1);
       }
       yield put({
         type: 'append',
         payload: res=='0'?appinfo:null,
       });
+    },
+    *delete({payload},{call,put}){
+      const response = yield call(deleteAppInfo, payload);
+      if(response=='0'){
+        message.success("应用删除成功",1);
+      }else{
+        message.error('应用删除失败',1);
+      }
+      yield put(routerRedux.push({pathname:'/'}));
     },
     *loginoutReset({},{call,put}){
 
@@ -68,6 +81,12 @@ export default {
         ...state,
         list: action.payload?state.list.concat(action.payload):state.list,
         username:getUserToken('username'),
+      };
+    },
+    dropAppInfo(state, action){
+      return {
+        ...state,
+        deleteApp:action.deleteApp
       };
     },
     resetAll(state, action){

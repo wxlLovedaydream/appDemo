@@ -74,8 +74,8 @@ console.log('CreateForm data',data);
         </Select>
       </FormItem>
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="执行类型">
-        <RadioGroup defaultValue='0' onChange={handleCMDType}>
-          <RadioButton key='0' value='0' >立即发送</RadioButton>
+        <RadioGroup defaultValue={0} onChange={handleCMDType}>
+          <RadioButton key='0' value={0} >立即发送</RadioButton>
           <RadioButton key='1' value={86400*2}>缓存发送</RadioButton>
         </RadioGroup>
       </FormItem>

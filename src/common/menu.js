@@ -170,6 +170,7 @@ const menuData = [
   {
     name:'设备管理',
     icon:'appstore-o',
+    authority: 'user',
     path:'device',
     children:[
       {
@@ -183,6 +184,7 @@ const menuData = [
   },{
     name:'数据订阅',
     icon:'pushpin-o',
+    authority: 'user',
     path:'subscribe',
     children:[
       {
@@ -197,6 +199,18 @@ const menuData = [
         path:'pushMessage',
       },
     ]
+  },
+  {
+    name: '统计信息',
+    icon: 'line-chart',
+    path: 'total',
+    children: [
+      {
+        name: '完成情况',
+        authority: 'admin',
+        path: 'chart',
+      }
+    ],
   },
 ]
 function formatter(data, parentPath = '/', parentAuthority) {

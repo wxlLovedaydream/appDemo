@@ -184,7 +184,7 @@ export default class GlobalHeader extends Component {
               emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
             />
           </NoticeIcon>*/}
-          {list.length&& <Select style={{width:'300px'}}
+          {list.length==0?<span> </span>: <Select style={{width:'300px'}}
                      defaultValue={list[0].appKey} ref='myselect'
                     onChange={this.handleSelectApp}>
             { list.map((value, index, array)=>{

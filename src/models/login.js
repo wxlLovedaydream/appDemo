@@ -20,7 +20,7 @@ export default {
       let res ={...response};
       if(response.statuscode=='0'){
         //成功
-        res.currentAuthor='user';
+        res.currentAuthor=response.authorityid=='1'?'user':'admin';
         res.type= 'account';
         res.username =payload.username;
       }else{
